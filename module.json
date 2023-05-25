@@ -1,0 +1,17 @@
+{
+  "id": "minesweeper",
+  "name": "Minesweeper",
+  "description": "",
+  "keywords": [],
+  "version": "1.0.0",
+  "humhub": {
+    "minVersion": "1.18.0"
+  },
+  "screenshots": [],
+  "authors": [
+    {
+      "name": "",
+      "homepage": ""
+    }
+  ]
+}
