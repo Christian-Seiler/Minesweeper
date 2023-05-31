@@ -1,19 +1,19 @@
-
 <?php
 
 namespace fhnw\modules\games\minesweeper;
+
 use fhnw\modules\gamecenter\components\GameModule;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\User;
+use fhnw\modules\gamecenter\components\LeaderboardType;
+use JetBrains\PhpStorm\ArrayShape;
 use Yii;
 use yii\helpers\Url;
+use yii\i18n\PhpMessageSource;
 
 /**
- * @property-read string[] $contentContainerTypes
- * @property-read string   $configUrl
+ * @property-read string $configUrl
  */
-class MinesweeperModule  extends GameModule{
+class MinesweeperModule extends GameModule
+{
 
   /** @return void */
   public function init(): void
@@ -26,8 +26,8 @@ class MinesweeperModule  extends GameModule{
    * Translates a message to the specified language.
    *
    * @param string   $category the message category.
-   * @param string   $message the message to be translated.
-   * @param string[] $params the parameters that will be used to replace the corresponding placeholders in the message.
+   * @param string   $message  the message to be translated.
+   * @param string[] $params   the parameters that will be used to replace the corresponding placeholders in the message.
    * @param ?string  $language the language code (e.g. `en-US`, `en`).
    *
    * @return string the translated message.
@@ -39,71 +39,52 @@ class MinesweeperModule  extends GameModule{
 
   /**
    * @inheritdoc
-   * @return array
+   * @return array<{name: string, title: string, description: string, secret?: bool, show_progress?: bool}>
    */
+  #[ArrayShape([['name' => 'string', 'title' => 'string', 'description' => 'string', 'secret' => 'bool', 'show_progress' => 'bool']])]
   public function getAchievementConfig(): array
   {
-    throw new \Exception('not implemented')
-      /* return [[
-        'name' => 'first-game',
-        'title' => 'Win your first game',
-        'description' => 'Win your first game'
-      ]]*/
+    return [];
+    /*
+    return [
+      [
+        'name'          => 'first-game',
+        'title'         => 'Win your first game',
+        'description'   => 'Win your first game',
+        'secret'        => true,
+        'show_progress' => true
+      ]
+    ];
+    */
   }
 
   /**
    * @inheritdoc
-   * @return string the url
+   * @return array<{title: string, description: string, tags?: string[]}>
    */
-  public function getConfigUrl(): string
-  {
-    return Url::to(['/minesweeper/admin']);
-  }
-
-  /**
-   * @inheritdoc
-   * @param ContentContainerActiveRecord $container unused
-   *
-   * @return string
-   */
-  public function getContentContainerDescription(ContentContainerActiveRecord $container): string
-  {
-    return MinesweeperModule::t('base', 'description');
-  }
-
-  /**
-  * @inheritdoc
-   *
-   * @param ContentContainerActiveRecord $container unused
-   *
-   * @return string
-   * @noinspection PhpMissingParentCallCommonInspection
-   */
-  public function getContentContainerName(ContentContainerActiveRecord $container): string
-  {
-    return MinesweeperModule::t('base', 'name');
-  }
-
-  /**
-   * @inheritdoc
-   * @return string[] valid content container classes
-   * @noinspection PhpMissingParentCallCommonInspection
-   */
-  public function getContentContainerTypes(): array
-  {
-    return [User::class];
-  }
-
-  /**
-   * @inheritdoc
-   * @return GameConfig
-   */
-  public function getGameConfig()
+  #[ArrayShape(['title' => 'string', 'description' => 'string', 'tags' => 'string[]'])]
+  public function getGameConfig(): array
   {
     return [
-      'title'       => 'MinesweeperModule',
-      'description' => 'The Game MinesweeperModule'
+        'title'       => 'Minesweeper',
+        'description' => 'The Game Minesweeper'
     ];
+  }
+
+  /**
+   * @return string
+   */
+  public function getGameUrl(): string
+  {
+    return Url::to(['/minesweeper/index']);
+  }
+
+  /**
+   * @return LeaderboardType[]
+   */
+  public function getLeaderboardConfig(): array
+  {
+    return [LeaderboardType::CLASSIC, LeaderboardType::RECURRING_MONTHLY];
   }
 
   /**
@@ -112,9 +93,10 @@ class MinesweeperModule  extends GameModule{
   private function registerTranslations(): void
   {
     Yii::$app->i18n->translations['minesweeper*'] = [
-      'class'          => 'yii\i18n\PhpMessageSource',
-      'sourceLanguage' => 'en',
-      'basePath'       => '@minesweeper/messages'
+        'class'          => PhpMessageSource::class,
+        'sourceLanguage' => 'en-US',
+        'basePath'       => '@minesweeper/messages'
     ];
   }
+
 }

@@ -1,4 +1,5 @@
-import * as $ from 'jQuery'
+//@ts-ignore
+import * as jQuery from 'jQuery'
 
 declare namespace humhub {
 
@@ -7,14 +8,14 @@ declare namespace humhub {
    *
    * @param {string} text The actual message (or text key)
    * @param {any} details Details about the message this could be an js object an error, or a client response object
-   * @param {boolean} setStatus A flag, which will trigger a global `humhub:modules:log:setStatus` event. This can be used to trigger the status bar for providing user feedback.
+   * @param {boolean} setStatus A flag, which will trigger a global `humhub:modules:log:setStatus` event.
+   * This can be used to trigger the status bar for providing user feedback.
    * @returns {void}
    */
   type LogFunction = (text: string, details: any, setStatus: boolean) => void
 
   type EventFunction = {
-    (events: string, selector: string, handler: Function): void,
-    (events: string, handler: Function): void
+    (events: string, selector: string, handler: Function): void, (events: string, handler: Function): void
   }
   type EventDataFunction = {
     (event: string, handler: Function): void,
@@ -38,9 +39,7 @@ declare namespace humhub {
     ajax: (url: string, cfg: object, originalEvent: unknown) => unknown
     back: () => unknown
     config: {
-      baseUrl: string,
-      reloadableScripts: string[],
-      text: object
+      baseUrl: string, reloadableScripts: string[], text: object
     }
     export: (exports: object) => unknown
     get: (url: string, cfg, originalEvent) => unknown
@@ -54,10 +53,7 @@ declare namespace humhub {
     offBeforeLoad: () => unknown
     onBeforeLoad: (form, msg, msgModal) => unknown
     pjax: {
-      require: Require,
-      initOnPjaxLoad: boolean,
-      isModule: boolean,
-      id: string
+      require: Require, initOnPjaxLoad: boolean, isModule: boolean, id: string
       config: object
     }
     post: (url: string, cfg: object, originalEvent?) => Promise<unknown>
@@ -97,24 +93,51 @@ declare namespace humhub {
    * @returns {Module}
    */
   type Require = {
-    (moduleNS: string, lazy?: boolean): Module,
-    (moduleNS: 'client', lazy?: boolean): ClientModule
+    (moduleNS: string, lazy?: boolean): Module, (moduleNS: 'client', lazy?: boolean): ClientModule
     (moduleNS: 'event', lazy?: boolean): EventModule
-    (moduleNS: 'gamecenter', lazy?: boolean): GameCenter
+    (moduleNS: 'gamecenter', lazy?: boolean): GameCenterModule
+  }
+
+  interface Achievement {
+    achievement: string
+    game: string
+    lastUpdated: string
+    percentCompleted: number
+  }
+
+  interface Achievement {
+    achievement: string
+    game: string
+    lastUpdated: string
+    percentCompleted: number
+  }
+
+  interface Leaderboard {
+
+  }
+
+  interface GameCenterModule extends Module {
+    shared(moduleID: string): GameCenter
   }
 
   class GameCenter {
-    constructor()
+    loadAchievements(): Promise<{ achievements: Array<Achievement> }>
 
-    submitScore(moduleId: string, score: number): Promise<unknown>
+    updateAchievement(achievement: Achievement): Promise<{ achievement: Achievement }>
 
-    startGame(moduleId: string): Promise<unknown>
+    startGame(): Promise<void>
 
-    endGame(moduleId: string): Promise<unknown>
+    endGame(): Promise<void>
 
-    report(moduleId: string, option: string, value: unknown): Promise<unknown>
+    report(option: string, value: unknown): Promise<void>
 
-    share(moduleId: string, text: string): Promise<unknown>
+    submitScore(score: number): Promise<void>
+
+    getHighScore(): Promise<{ highscore: number }>
+
+    share(text: string): Promise<void>
+
+    loadLeaderboard(): Promise<Array<Leaderboard>>
   }
 
   /**

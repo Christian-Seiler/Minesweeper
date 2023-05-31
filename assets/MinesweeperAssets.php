@@ -1,39 +1,38 @@
 <?php
+
 namespace fhnw\modules\games\minesweeper\assets;
+
 use fhnw\modules\gamecenter\assets\GameCenterAssets;
-use humhub\components\assets\AssetBundle;
-use yii\web\View;
+use fhnw\modules\gamecenter\components\GameAssets;
 
 /**
-* The class MinesweeperAsset
-*/
-class MinesweeperAsset extends AssetBundle
+ * The class MinesweeperAsset
+ */
+class MinesweeperAssets extends GameAssets
 {
 
   /** @var array $css */
   public $css = [
-    'css/minesweeper.css'
+      'css/minesweeper.css'
   ];
 
   /** @var array $depends */
   public $depends = [
-    GameCenterAssets::class
-    // any additional dependencies
+      GameCenterAssets::class,
+      P5Assets::class
   ];
 
   /** @var array $js */
   public $js = [
-    'js/minesweeper.js'
+      'js/minesweeper.js'
   ];
-
-  /** @var int $jsPosition */
-  public $jsPosition = View::POS_HEAD;
 
   /** @var array $publishOptions */
   public $publishOptions = [
-    'forceCopy' => true // TODO: remove for production
+      'forceCopy' => true // TODO: remove for production
   ];
 
   /** @var string $sourcePath */
   public $sourcePath = '@minesweeper/resources';
+
 }

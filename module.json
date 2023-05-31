@@ -2,12 +2,12 @@
   "id": "minesweeper",
   "name": "Minesweeper",
   "description": "",
-  "keywords": [],
+  "keywords": [ ],
   "version": "1.0.0",
   "humhub": {
-    "minVersion": "1.18.0"
+    "minVersion": "1.14.0"
   },
-  "screenshots": [],
+  "screenshots": [ ],
   "authors": [
     {
       "name": "",
